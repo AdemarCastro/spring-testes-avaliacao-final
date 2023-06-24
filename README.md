@@ -2,8 +2,7 @@
 
 ## Documento da Avaliação
 
-<iframe src="https://AdemarCastro.github.io/pdf-spring-testes/Aranoua%20-%20Desenvolvendo%20com%20Spring%20e%20Testes%20-%20Avaliação%20Geral.pdf" width="100%" height="600px">
-</iframe>
+<img src="imgs/DOC-AVALIACAO.png" width="70%" alt="Gif mostrando a execução do projeto.">
 
 ## Breve explicação 💥
 
@@ -17,43 +16,54 @@ disponibilizada em produção, o que aumentou a qualidade e a confiabilidade da 
 
 ## Testes realizados 🧶
 
-### RN-01: O voluntário deve ter os seguintes dados cadastrados (todos obrigatórios): Passaporte, Nome
-Completo, Idade, Telefone, E-mail e Tipo Sanguíneo.
+### RN-01: O voluntário deve ter os seguintes dados cadastrados (todos obrigatórios): Passaporte, Nome Completo, Idade, Telefone, E-mail e Tipo Sanguíneo.
 
-POSITIVO
+#### POSITIVO
 <img src="imgs/RN-01-POSITIVO.png" width="70%" alt="Gif mostrando a execução do projeto.">
 
-NEGATIVO
+---
+
+#### NEGATIVO
 <img src="imgs/RN-01-NEGATIVO.png" width="70%" alt="Gif mostrando a execução do projeto.">
 
 ---
 
 ### RN-02: Um voluntário não pode ser cadastrado se já tiver um passaporte com o mesmo número no sistema.
 
-POSITIVO
+#### POSITIVO
 <img src="imgs/RN-02-POSITIVO.png" width="70%" alt="Gif mostrando a execução do projeto.">
 
-NEGATIVO
+---
+
+#### NEGATIVO
 <img src="imgs/RN-02-NEGATIVO.png" width="70%" alt="Gif mostrando a execução do projeto.">
 
 ---
 
 ### RN-03: O voluntário deve ter de 18 a 55 anos de idade;
 
-POSITIVO
+#### POSITIVO
 <img src="imgs/RN-03-POSITIVO.png" width="70%" alt="Gif mostrando a execução do projeto.">
 
-NEGATIVO
+---
+
+#### NEGATIVO
 <img src="imgs/RN-03-NEGATIVO.png" width="70%" alt="Gif mostrando a execução do projeto.">
 
 ---
 
 ### RN-05: O voluntário deve ter sua situação de saúde declarada (Opções: Ruim, Bom, Ótimo).
 
-POSITIVO
+#### POSITIVO
 <img src="imgs/RN-05-POSITIVO.png" width="70%" alt="Gif mostrando a execução do projeto.">
 
-NEGATIVO
+---
+
+#### NEGATIVO
 <img src="imgs/RN-05-NEGATIVO.png" width="70%" alt="Gif mostrando a execução do projeto.">
 
 ---
+
+### Conclusão 🎈
+
+Em resumo, o projeto demonstrou a importância dos testes automatizados para garantir a qualidade e a confiabilidade de uma aplicação e como o ecossistema Spring pode ser utilizado para simplificar o desenvolvimento e a implementação desses testes.
