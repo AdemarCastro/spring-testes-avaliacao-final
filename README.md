@@ -162,17 +162,23 @@ Os testes automatizados foram executados e as evidências estão disponíveis no
 
 ```json
 {
-    "situacaoDeSaudeDeclarada": "Bom"
-}
-{
     "passaporteId": "123456",
     "nomeCompleto": "Ademar Castro",
     "idade": 19,
     "telefone": "99999999",
     "email": "ademar@gmail.com",
     "tipoSanguineo": "O-",
-    "situacaoDeSaude": situacaoDeSaude,
-    "cidade": cidade
+    "situacaoDeSaude": {
+        "situacaoDeSaudeDeclarada": "Bom"
+    },
+    "cidade": {
+        "nome": "Belo Horizonte",
+        "ibge": "103",
+        "pais": {
+            "nome": "Brasil",
+            "ibge": "1001",
+        }
+    }
 }
 ```
 
