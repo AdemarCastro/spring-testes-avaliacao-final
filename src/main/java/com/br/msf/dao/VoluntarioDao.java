@@ -2,62 +2,71 @@ package com.br.msf.dao;
 
 import com.br.msf.model.Cidade;
 import com.br.msf.model.Pais;
-import com.br.msf.model.SituacaoDeSaude;
 import com.br.msf.model.Voluntario;
 import com.br.msf.repository.CidadeRepository;
+import com.br.msf.repository.PaisRepository;
+import com.br.msf.repository.VoluntarioRepository;
 
-import javax.persistence.EntityManager;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class VoluntarioDao {
 
-    // Lista de voluntários cadastrados no sistema
-    private List<Voluntario> voluntarios = new ArrayList<>();
+    @Autowired
+    private VoluntarioRepository voluntarioRepository;
+
+    @Autowired
     private CidadeRepository cidadeRepository;
 
-    EntityManager entityManager = null;
-
-    private Connection connection;
+    @Autowired
+    private PaisRepository paisRepository;
 
     // Adiciona um voluntário à lista de voluntários
-    public boolean cadastrarVoluntario(Voluntario voluntario) {
-        if (buscarVoluntarioPorPassaporte(voluntario.getPassaporte()) != null) {
-            return false; // Já existe um voluntário com o mesmo número de passaporte
+    public String cadastrarVoluntario(Voluntario voluntario) {
+
+        // Vamos verificar se foi informado a Cidade e o País
+        if (voluntario.getCidade() != null && voluntario.getCidade().getPais() != null) {
+            Cidade cidade = voluntario.getCidade();
+            Pais pais = voluntario.getCidade().getPais();
+
+            Cidade cidadeEncontrada = cidadeRepository.buscarCidade(cidade.getNome(), cidade.getIbge());
+
+            if (cidadeEncontrada == null) {
+                return "A cidade informada não existe no banco de dados.";
+            }
+        
+            Pais paisEncontrado = paisRepository.buscarPais(pais.getNome(), pais.getIbge());
+        
+            if (paisEncontrado == null) {
+                return "O país informado não existe no banco de dados.";
+            }
+
+        }
+
+        if (voluntarioRepository.findOneByPassaporte(voluntario.getPassaporte()) != null) {
+            return "Já existe um voluntário com o mesmo número de passaporte.";
         }
 
         // Verifica se a idade está dentro do intervalo permitido (18 a 55 anos)
         int idade = Integer.parseInt(voluntario.getIdade());
         if (idade < 18 || idade > 55) {
-            return false; // Idade inválida
+            return "Idade inválida. A idade deve estar entre 18 e 55 anos.";
         }
 
         if (voluntario.getSituacaoDeSaude() == null) {
-            return false;
+            return "A situação de saúde não foi informada.";
         }
 
         String situacaoDeSaude = voluntario.getSituacaoDeSaude().getSituacaoDeSaudeDeclarada();
-        if (situacaoDeSaude.equals("Ruim") || situacaoDeSaude.equals("Bom") || situacaoDeSaude.equals("Ótimo")) {
-            voluntarios.add(voluntario);
-            return true;
-        } else {
-            return false;
+        
+        if (!situacaoDeSaude.equals("Ruim") && !situacaoDeSaude.equals("Bom") && !situacaoDeSaude.equals("Ótimo")) {
+            return "Situação de saúde inválida. Opções válidas: Ruim, Bom, Ótimo.";
         }
 
+        voluntarioRepository.save(voluntario);
+        return "Cadastro realizado com sucesso.";
 
-    }
-
-    // Busca um voluntário na lista de voluntários pelo número do passaporte
-    public Voluntario buscarVoluntarioPorPassaporte(String numeroPassaporte) {
-        for (Voluntario voluntario : voluntarios) {
-            if (voluntario.getPassaporte().equals(numeroPassaporte)) {
-                return voluntario;
-            }
-        }
-        return null; // Não foi encontrado nenhum voluntário com o número de passaporte informado
     }
 
 }

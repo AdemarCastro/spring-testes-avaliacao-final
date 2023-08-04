@@ -2,7 +2,11 @@
 
 ## Documento Oficial do Projeto
 
-<img src="imgs/DOC-AVALIACAO.png" width="70%" alt="Gif mostrando a execução do projeto.">
+<img src="imgs/DOC-AVALIACAO.png" width="70%">
+
+## Testes realizados
+
+<img src="imgs/TESTES-100.png" width="70%">
 
 ## Descrição do Projeto
 
@@ -43,58 +47,132 @@ Os testes serão realizados para garantir o correto funcionamento das regras de 
 
 ## Instruções para Teste
 
-Para executar os testes automatizados, foram criadas classes de teste para cada entidade do sistema. Essas classes podem ser encontradas no pacote de testes correspondente a cada entidade. Os testes foram organizados da seguinte forma:
+Os testes foram organizados na classe VoluntarioRepositoryTest.java em ("src/test/com/br/msf/repository/"), seguindo a ordem estabelecida na atividade proposta. Todos os testes foram realizados em sequência.
 
-### Voluntário
+### RN-01: O voluntário deve ter os seguintes dados cadastrados (todos obrigatórios): Passaporte, Nome Completo, Idade, Telefone, E-mail e Tipo Sanguíneo
 
-- Testes de Repository:
-    - Cenário Positivo: Verifica se é possível cadastrar um novo voluntário no sistema sem conflito de passaportes.
-    - Cenário Negativo: Verifica se o sistema impede o cadastro de um voluntário com o mesmo passaporte de outro já cadastrado.
+- Positivo:
+    - Cenário: Todos os dados cadastrais são informados corretamente
+        - Cria-se um voluntário com todos os dados obrigatórios preenchidos corretamente (Passaporte, Nome Completo, Idade, Telefone, E-mail e Tipo Sanguíneo)
+        - Verifica-se se o cadastro foi realizado com sucesso.
+Negativo:
+    - Cenário: O campo "Passaporte" não é informado
+        - Cria-se um voluntário sem informar o número do passaporte
+        - Verifica-se se o resultado é que o cadastro não foi realizado.
+    - Cenário: O campo "Nome Completo" não é informado
+        - Cria-se um voluntário sem informar o nome completo
+        - Verifica-se se o resultado é que o cadastro não foi realizado.
+    - Cenário: O campo "Idade" não é informado
+        - Cria-se um voluntário sem informar a idade
+        - Verifica-se se o resultado é que o cadastro não foi realizado.
+    - Cenário: O campo "Telefone" não é informado
+        - Cria-se um voluntário sem informar o telefone
+        - Verifica-se se o resultado é que o cadastro não foi realizado.
+    - Cenário: O campo "E-mail" não é informado
+        - Cria-se um voluntário sem informar o e-mail
+        - Verifica-se se o resultado é que o cadastro não foi realizado.
+    - Cenário: O campo "Tipo Sanguíneo" não é informado
+        - Cria-se um voluntário sem informar o tipo sanguíneo
+        - Verifica-se se o resultado é que o cadastro não foi realizado.
+    - Cenário: O campo "Passaporte" já está em uso por outro voluntário
+        - Cria-se um voluntário com um passaporte que já está em uso por outro voluntário no sistema
+        - Verifica-se se o resultado é que o cadastro não foi realizado.
 
-- Testes de Controller:
-    - Cenário Positivo: Verifica se o cadastro de um novo voluntário através do Controller é realizado com sucesso.
-    - Cenário Negativo: Verifica se o Controller trata corretamente o cadastro de um voluntário com passaporte já existente.
+### RN-02: Um voluntário não pode ser cadastrado se já tiver um passaporte com o mesmo número no sistema
 
-### Cidade
+- Positivo:
+    - Cenário: Não há nenhum voluntário cadastrado no sistema com o mesmo número de passaporte
+        - Cria-se um voluntário com um passaporte válido e todos os outros dados cadastrais
+        - Verifica-se se o cadastro foi realizado com sucesso.
 
-- Testes de Repository:
-    - Cenário Positivo: Verifica se é possível cadastrar uma nova cidade no sistema.
-    - Cenário Negativo: Verifica se o sistema impede o cadastro de uma cidade com informações inválidas.
+- Negativo:
+    - Cenário: Já existe um voluntário cadastrado no sistema com o mesmo número de passaporte
+        - Cria-se um voluntário com um passaporte que já está em uso por outro voluntário
+        - Verifica-se se o resultado é que o cadastro não foi realizado.
 
-- Testes de Controller:
-    - Cenário Positivo: Verifica se o cadastro de uma nova cidade através do Controller é realizado com sucesso.
-    - Cenário Negativo: Verifica se o Controller trata corretamente o cadastro de uma cidade com informações inválidas.
+### RN-03: O voluntário deve ter de 18 a 55 anos de idade
 
-### País
+- Positivo:
+    - Cenário: O voluntário tem exatamente 18 anos de idade
+        - Cria-se um voluntário com 18 anos de idade
+        - Verifica-se se o cadastro foi realizado com sucesso.
+    - Cenário: O voluntário tem exatamente 55 anos de idade
+        - Cria-se um voluntário com 55 anos de idade
+        - Verifica-se se o cadastro foi realizado com sucesso.
 
-- Testes de Repository:
-    - Cenário Positivo: Verifica se é possível cadastrar um novo país no sistema.
-    - Cenário Negativo: Verifica se o sistema impede o cadastro de um país com informações inválidas.
+- Negativo:
+    - Cenário: O voluntário tem menos de 18 anos de idade
+        - Cria-se um voluntário com 17 anos de idade
+        - Verifica-se se o resultado é que o cadastro não foi realizado.
+    - Cenário: O voluntário tem mais de 55 anos de idade
+        - Cria-se um voluntário com 56 anos de idade
+        - Verifica-se se o resultado é que o cadastro não foi realizado.
 
-- Testes de Controller:
-    - Cenário Positivo: Verifica se o cadastro de um novo país através do Controller é realizado com sucesso.
-    - Cenário Negativo: Verifica se o Controller trata corretamente o cadastro de um país com informações inválidas.
+### RN-04: O voluntário deve estar associado a uma cidade de um determinado país
+
+- Positivo:
+    - Cenário: A cidade e o país informados existem no sistema
+        - Cria-se um país e uma cidade válidos no sistema
+        - Cria-se um voluntário associado a essa cidade e país
+        - Verifica-se se o cadastro foi realizado com sucesso.
+        
+- Negativo:
+    - Cenário: A cidade informada não existe no sistema
+        - Cria-se um país válido no sistema
+        - Cria-se um voluntário associado a uma cidade inexistente
+        - Verifica-se se o resultado é que o cadastro não foi realizado.
+    - Cenário: O país informado não existe no sistema
+        - Cria-se uma cidade válida no sistema
+        - Cria-se um voluntário associado a um país inexistente
+        - Verifica-se se o resultado é que o cadastro não foi realizado.
+
+### RN-05: O voluntário deve ter sua situação de saúde declarada (Opções: Ruim, Bom, Ótimo)
+
+- Positivo:
+    - Cenário: A situação de saúde informada é válida (Ruim)
+        - Cria-se um voluntário com situação de saúde declarada como "Ruim"
+        - Verifica-se se o cadastro foi realizado com sucesso.
+    - Cenário: A situação de saúde informada é válida (Bom)
+        - Cria-se um voluntário com situação de saúde declarada como "Bom"
+        - Verifica-se se o cadastro foi realizado com sucesso.
+    - Cenário: A situação de saúde informada é válida (Ótimo)
+        - Cria-se um voluntário com situação de saúde declarada como "Ótimo"
+        - Verifica-se se o cadastro foi realizado com sucesso.
+
+- Negativo:
+    - Cenário: A situação de saúde informada não é válida
+        - Cria-se um voluntário com situação de saúde declarada como "Regular"
+        - Verifica-se se o resultado é que o cadastro não foi realizado.
+    - Cenário: A situação de saúde não é informada
+        - Cria-se um voluntário sem informar a situação de saúde
+        - Verifica-se se o resultado é que o cadastro não foi realizado.
+
+##  Observação:
+
+- Os testes foram organizados na classe VoluntarioRepositoryTest.java seguindo a ordem estabelecida na atividade proposta, com dois cenários (Positivo e Negativo) para cada Requisito de Negócios. No entanto, é importante lembrar que novos testes podem ser elaborados e organizados para verificar diversos cenários e garantir a correta aplicação dos requisitos.
 
 ## Execução dos Testes
 
-Os testes automatizados foram executados e as evidências estão disponíveis no arquivo "testes.png" na pasta raiz do projeto.
+Os testes automatizados foram executados e as evidências estão disponíveis no arquivo "Testes.png" na pasta raiz do projeto.
 
 ## Misc
 
-Dados para criar um novo voluntário:
+- Não é obrigatório informar a cidade e o país.
+- É obrigatório informar pelo menos a situacaoDeSaudeDeclarada da classe SituacaoDeSaude.
 
 ```json
 {
-    "passaporteId": "BB0002",
+    "situacaoDeSaudeDeclarada": "Bom"
+}
+{
+    "passaporteId": "123456",
     "nomeCompleto": "Ademar Castro",
     "idade": 19,
-    "telefone": "+55 (92) 90000-0000",
+    "telefone": "99999999",
     "email": "ademar@gmail.com",
     "tipoSanguineo": "O-",
-    "situacaoSaude": "RUIM",
-    "cidade": {
-        "id": 2
-    }
+    "situacaoDeSaude": situacaoDeSaude,
+    "cidade": cidade
 }
 ```
 

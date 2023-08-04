@@ -2,6 +2,7 @@ package com.br.msf.controller;
 
 import com.br.msf.dto.CidadeInputDto;
 import com.br.msf.model.Cidade;
+import com.br.msf.model.Pais;
 import com.br.msf.repository.CidadeRepository;
 import com.br.msf.repository.PaisRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,15 @@ public class CidadeController {
     public List<Cidade> list(){
         List<Cidade> cidades = cidadeRepository.list();
         return cidades;
+    }
+
+    public ResponseEntity<Cidade> buscarPorNomeEIBGE(@RequestParam String nome, @RequestParam String ibge) {
+        Cidade cidade = cidadeRepository.buscarCidade(nome, ibge);
+        if (cidade != null) {
+            return ResponseEntity.ok(cidade);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 

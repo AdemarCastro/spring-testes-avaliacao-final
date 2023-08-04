@@ -15,4 +15,7 @@ public interface PaisRepository extends JpaRepository<Pais,Long> {
     Pais findOneByIbge(String parIbge);
 
     List<Pais> findByNomeIgnoreCase(String nome); // IgnoreCase acha o valor ignorando o Capslock da pesquisa
+
+    @Query("SELECT p FROM Pais p WHERE p.nome = :nome AND p.ibge = :ibge")
+    Pais buscarPais(String nome, String ibge);
 }

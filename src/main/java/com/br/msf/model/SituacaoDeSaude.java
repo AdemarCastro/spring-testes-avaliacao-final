@@ -10,16 +10,16 @@ public class SituacaoDeSaude {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String situacaoDeSaudeDeclarada;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Boolean tratamentoEmAndamento;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String historico;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Date data;
 
     @OneToOne(mappedBy = "situacaoDeSaude")

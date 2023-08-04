@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -29,6 +30,15 @@ public class PaisController {
     public List<Pais> list(){
         List<Pais> paises = paisRepository.list();
         return paises;
+    }
+
+    public ResponseEntity<Pais> buscarPorNomeEIBGE(@RequestParam String nome, @RequestParam String ibge) {
+        Pais pais = paisRepository.buscarPais(nome, ibge);
+        if (pais != null) {
+            return ResponseEntity.ok(pais);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @ResponseBody

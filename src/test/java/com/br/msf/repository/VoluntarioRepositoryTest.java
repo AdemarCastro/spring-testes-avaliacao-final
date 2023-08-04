@@ -9,18 +9,18 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @DataJpaTest
-public class VoluntarioRespositoryTest {
+public class VoluntarioRepositoryTest {
 
     @Autowired
     private VoluntarioRepository voluntarioRepository;
+
+    @Autowired
+    private VoluntarioDao voluntarioDao;
 
     @Autowired
     private CidadeRepository cidadeRepository;
@@ -82,6 +82,8 @@ public class VoluntarioRespositoryTest {
         SituacaoDeSaude situacaoDeSaude1 = new SituacaoDeSaude();
         situacaoDeSaude1.setSituacaoDeSaudeDeclarada("Ótimo");
 
+        situacaoDeSaudeRepository.save(situacaoDeSaude1);
+
         String numeroPassaporte1 = "123456";
         String numeroPassaporte2 = "841565";
         Voluntario voluntario1 = new Voluntario();
@@ -94,15 +96,16 @@ public class VoluntarioRespositoryTest {
         voluntario1.setSituacaoDeSaude(situacaoDeSaude1);
 
         // Cadastra o voluntário
-        VoluntarioDao voluntarioDao = new VoluntarioDao();
-        boolean cadastro1 = voluntarioDao.cadastrarVoluntario(voluntario1);
+        String cadastro1 = voluntarioDao.cadastrarVoluntario(voluntario1);
 
         // Verifica se o cadastro foi bem-sucedido
-        Assertions.assertTrue(cadastro1);
+        Assertions.assertEquals("Cadastro realizado com sucesso.", cadastro1);
 
         // Tenta cadastrar outro voluntário com o mesmo passaporte
         SituacaoDeSaude situacaoDeSaude2 = new SituacaoDeSaude();
         situacaoDeSaude2.setSituacaoDeSaudeDeclarada("Ruim");
+
+        situacaoDeSaudeRepository.save(situacaoDeSaude2);
 
         Voluntario voluntario2 = new Voluntario();
         voluntario2.setPassaporte(numeroPassaporte2);
@@ -114,10 +117,10 @@ public class VoluntarioRespositoryTest {
         voluntario2.setSituacaoDeSaude(situacaoDeSaude2);
 
         // Tenta cadastrar o segundo voluntário
-        boolean cadastro2 = voluntarioDao.cadastrarVoluntario(voluntario2);
+        String cadastro2 = voluntarioDao.cadastrarVoluntario(voluntario2);
 
         // Verifica se o cadastro foi bloqueado
-        Assertions.assertTrue(cadastro2);
+        Assertions.assertEquals("Cadastro realizado com sucesso.", cadastro2);
     }
 
     // NEGATIVO
@@ -126,6 +129,8 @@ public class VoluntarioRespositoryTest {
         // Cria um voluntário com um passaporte já existente no sistema
         SituacaoDeSaude situacaoDeSaude1 = new SituacaoDeSaude();
         situacaoDeSaude1.setSituacaoDeSaudeDeclarada("Bom");
+
+        situacaoDeSaudeRepository.save(situacaoDeSaude1);
 
         String numeroPassaporte = "123456";
         Voluntario voluntario1 = new Voluntario();
@@ -138,15 +143,17 @@ public class VoluntarioRespositoryTest {
         voluntario1.setSituacaoDeSaude(situacaoDeSaude1);
 
         // Cadastra o voluntário
-        VoluntarioDao voluntarioDao = new VoluntarioDao();
-        boolean cadastro1 = voluntarioDao.cadastrarVoluntario(voluntario1);
+        String cadastro1 = voluntarioDao.cadastrarVoluntario(voluntario1);
 
         // Verifica se o cadastro foi bem-sucedido
-        Assertions.assertTrue(cadastro1);
+        Assertions.assertEquals("Cadastro realizado com sucesso.", cadastro1);
 
         // Tenta cadastrar outro voluntário com o mesmo passaporte
         SituacaoDeSaude situacaoDeSaude2 = new SituacaoDeSaude();
         situacaoDeSaude2.setSituacaoDeSaudeDeclarada("Ruim");
+
+        situacaoDeSaudeRepository.save(situacaoDeSaude2);
+
 
         Voluntario voluntario2 = new Voluntario();
         voluntario2.setPassaporte(numeroPassaporte);
@@ -158,10 +165,10 @@ public class VoluntarioRespositoryTest {
         voluntario2.setSituacaoDeSaude(situacaoDeSaude2);
 
         // Tenta cadastrar o segundo voluntário
-        boolean cadastro2 = voluntarioDao.cadastrarVoluntario(voluntario2);
+        String cadastro2 = voluntarioDao.cadastrarVoluntario(voluntario2);
 
         // Verifica se o cadastro foi bloqueado
-        Assertions.assertFalse(cadastro2);
+        Assertions.assertNotEquals("Cadastro realizado com sucesso.", cadastro2);
     }
 
     // TESTE: RN-03: O voluntário deve ter de 18 a 55 anos de idade;
@@ -181,10 +188,9 @@ public class VoluntarioRespositoryTest {
         voluntario.setTipoSanguineo("A+");
         voluntario.setSituacaoDeSaude(situacaoDeSaude);
 
-        VoluntarioDao voluntarioDao = new VoluntarioDao();
-        boolean cadastro = voluntarioDao.cadastrarVoluntario(voluntario);
+        String cadastro = voluntarioDao.cadastrarVoluntario(voluntario);
 
-        Assertions.assertTrue(cadastro);
+        Assertions.assertEquals("Cadastro realizado com sucesso.", cadastro);
     }
 
     // NEGATIVO
@@ -202,10 +208,9 @@ public class VoluntarioRespositoryTest {
         voluntario.setTipoSanguineo("A+");
         voluntario.setSituacaoDeSaude(situacaoDeSaude);
 
-        VoluntarioDao voluntarioDao = new VoluntarioDao();
-        boolean cadastro = voluntarioDao.cadastrarVoluntario(voluntario);
+        String cadastro = voluntarioDao.cadastrarVoluntario(voluntario);
 
-        Assertions.assertFalse(cadastro);
+        Assertions.assertNotEquals("Cadastro realizado com sucesso.", cadastro);
     }
 
     // TESTE: RN-04: O voluntário deve estar associado a uma cidade de um determinado país.
@@ -221,6 +226,9 @@ public class VoluntarioRespositoryTest {
         cidade.setIbge("103");
         cidade.setPais(pais);
 
+        SituacaoDeSaude situacaoDeSaude = new SituacaoDeSaude();
+        situacaoDeSaude.setSituacaoDeSaudeDeclarada("Ruim");
+
         Voluntario voluntario = new Voluntario();
         voluntario.setPassaporte("123456");
         voluntario.setNome("João");
@@ -229,11 +237,11 @@ public class VoluntarioRespositoryTest {
         voluntario.setEmail("joao@teste.com");
         voluntario.setTipoSanguineo("A+");
         voluntario.setCidade(cidade);
+        voluntario.setSituacaoDeSaude(situacaoDeSaude);
 
-        VoluntarioDao voluntarioDao = new VoluntarioDao();
-        boolean cadastro = voluntarioDao.cadastrarVoluntario(voluntario);
+        String cadastro = voluntarioDao.cadastrarVoluntario(voluntario);
 
-        Assertions.assertTrue(cadastro);
+        Assertions.assertEquals("Cadastro realizado com sucesso.", cadastro);
     }
 
     // NEGATIVO
@@ -244,7 +252,7 @@ public class VoluntarioRespositoryTest {
         pais.setIbge("1001");
 
         Cidade cidade = new Cidade();
-        cidade.setNome("Miami");
+        cidade.setNome("Miami"); // Cidade não existe no banco de dados
         cidade.setIbge("952");
         cidade.setPais(pais);
 
@@ -257,10 +265,9 @@ public class VoluntarioRespositoryTest {
         voluntario.setTipoSanguineo("A+");
         voluntario.setCidade(cidade);
 
-        VoluntarioDao voluntarioDao = new VoluntarioDao();
-        boolean cadastro = voluntarioDao.cadastrarVoluntario(voluntario);
+        String cadastro = voluntarioDao.cadastrarVoluntario(voluntario);
 
-        Assertions.assertFalse(cadastro);
+        Assertions.assertEquals("A cidade informada não existe no banco de dados.", cadastro);
     }
 
     // TESTE: RN-05: O voluntário deve ter sua situação de saúde declarada (Opções: Ruim, Bom, Ótimo).
@@ -284,10 +291,9 @@ public class VoluntarioRespositoryTest {
         voluntario.setTipoSanguineo("A+");
         voluntario.setSituacaoDeSaude(situacaoDeSaude);
 
-        VoluntarioDao voluntarioDao = new VoluntarioDao();
-        boolean cadastro = voluntarioDao.cadastrarVoluntario(voluntario);
+        String cadastro = voluntarioDao.cadastrarVoluntario(voluntario);
 
-        Assertions.assertTrue(cadastro);
+        Assertions.assertEquals("Cadastro realizado com sucesso.", cadastro);
     }
 
     // NEGATIVO
@@ -309,9 +315,8 @@ public class VoluntarioRespositoryTest {
         voluntario.setTipoSanguineo("A+");
         voluntario.setSituacaoDeSaude(situacaoDeSaude);
 
-        VoluntarioDao voluntarioDao = new VoluntarioDao();
-        boolean cadastro = voluntarioDao.cadastrarVoluntario(voluntario);
+        String cadastro = voluntarioDao.cadastrarVoluntario(voluntario);
 
-        Assertions.assertFalse(cadastro);
+        Assertions.assertNotEquals("Cadastro realizado com sucesso.", cadastro);
     }
 }
