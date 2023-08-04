@@ -6,7 +6,7 @@
 
 ## Testes realizados
 
-<img src="imgs/TESTES-100.png" width="70%">
+<img src="imgs/Testes.png" width="70%">
 
 ## Descrição do Projeto
 
